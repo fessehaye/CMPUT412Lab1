@@ -7,7 +7,12 @@ public class test1 {
 	static EncoderMotor motorA = new NXTMotor (MotorPort.A);
 	static EncoderMotor motorC = new NXTMotor (MotorPort.C);
 	public static void main(String[] args) {
-		figure_eight();		
+		int[][] command = {
+			      { 80, 60, 2},
+			      { 60, 60, 1},
+			      {-50, 80, 2}
+			    };
+		Reckoning_Position(command);		
 	}
 	public static void rectangle(){
 		//Rectangle
@@ -92,6 +97,106 @@ public class test1 {
 		Button.waitForAnyPress();
 	}
 		
-			
+	public static void Array_Reader(int[][] command){
+        //Reads the 3x3 input arrays Motor A, Motor C, Time in Seconds
+        motorA.setPower(command[0][0]);
+        motorC.setPower(command[0][1]);
+        motorA.resetTachoCount();
+        motorA.forward();
+        motorC.forward();
+        Delay.msDelay((command[0][2])*1000);
+        
+        motorA.setPower(command[1][0]);
+        motorC.setPower(command[1][1]);
+        motorA.resetTachoCount();
+        motorA.forward();
+        motorC.forward();
+        Delay.msDelay((command[1][2])*1000);
+        
+        for (int i = 0; i<3; i++){
+        	motorA.setPower(command[2][0]);
+            motorC.setPower(command[2][1]);
+            motorA.resetTachoCount();
+            motorA.forward();
+            motorC.forward();
+            Delay.msDelay((command[2][2])*1000);	
+        }
+        
+        Button.waitForAnyPress();
+    }	
 
+	public static void Reckoning_Position(int[][] command){
+
+        //Display Position and Heading from (0,0)
+		double tHeading = 0;
+		double xPosition = 0;
+		double yPosition = 0;
+		double cRVel = 0;
+		double cAngPos = 0;
+        double wDiameter = 56;//in mm
+        double TrackWidth = 148;// in mm
+        double dPerTick = Math.PI*wDiameter/360;
+        double TicksPerRotation = Math.PI*TrackWidth/dPerTick;
+        double RadiansPerTick = 2*Math.PI/TicksPerRotation;
+        double cDistance, cxDistance, cyDistance,
+        cHeading, cAngAccel, lRVel, lAngPos;
+        int prTicks, plTicks, lTicks, rTicks, i, j;
+        int crTicks = 0;
+        int clTicks = 0;
+        int cTime = 10;// in ms
+        
+        motorA.resetTachoCount();
+        
+        for (i = 0; i<3; i++){
+        	motorA.setPower(command[i][0]);
+            motorC.setPower(command[i][1]);
+            motorA.forward();
+            motorC.forward();
+            
+            //delay loop
+            j = 0;
+            while(j<(command[i][2])*1000){
+            	j += cTime;
+                Delay.msDelay(cTime);
+                prTicks = crTicks;
+                plTicks = clTicks;
+                clTicks = motorA.getTachoCount();
+                crTicks = motorC.getTachoCount();
+                
+                rTicks = crTicks - prTicks;
+                lTicks = clTicks - plTicks;
+                cDistance = (rTicks+lTicks)/2*dPerTick;
+                
+                
+                //counter-clockwise
+                cHeading = (rTicks-lTicks)/2*RadiansPerTick;
+                tHeading += cHeading;
+                cxDistance = cDistance + Math.cos(tHeading);
+                cyDistance = cDistance + Math.sin(tHeading);
+                xPosition += cxDistance;
+                yPosition += cyDistance;
+                
+                //maybe this was an over think?
+                //lRVel = cRVel;
+                //cRVel = cHeading/cTime;
+                //cAngAccel = (cRVel - lRVel)/2;
+                //lAngPos = cAngPos;
+                //check my summing of angle logic
+                //cAngPos = lAngPos+(lRVel*cTime)+(cTime*cTime*cAngAccel/2);
+                
+                
+                
+            }	
+        }
+        
+		System.out.println("x: " + xPosition + "cm");
+		System.out.println("y: " + yPosition + "cm");
+        
+        Button.waitForAnyPress();
+        
+        
+        
+	}
+	
+	
 }
