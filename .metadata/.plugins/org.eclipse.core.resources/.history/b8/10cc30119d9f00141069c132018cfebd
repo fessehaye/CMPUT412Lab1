@@ -1,0 +1,10 @@
+import lejos.hardware.Button;
+import lejos.hardware.motor.NXTMotor;
+import lejos.hardware.port.MotorPort;
+import lejos.robotics.EncoderMotor;
+import lejos.utility.Delay;
+public class NXTremoteControl_TA {
+	RemoteEV3 ev3 = new RemoteEV3("192.168.0.9");
+	ev3.setDefault();
+	Sound.beep();
+}
