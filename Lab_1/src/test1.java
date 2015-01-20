@@ -171,8 +171,8 @@ public class test1 {
                 //counter-clockwise
                 cHeading = (rTicks-lTicks)/2*RadiansPerTick;
                 tHeading += cHeading;
-                cxDistance = cDistance + Math.cos(tHeading);
-                cyDistance = cDistance + Math.sin(tHeading);
+                cxDistance = cDistance * Math.cos(tHeading);
+                cyDistance = cDistance * Math.sin(tHeading);
                 xPosition += cxDistance;
                 yPosition += cyDistance;
                 
@@ -189,8 +189,9 @@ public class test1 {
             }	
         }
         
-		System.out.println("x: " + xPosition + "cm");
-		System.out.println("y: " + yPosition + "cm");
+        System.out.println("x: " + (int)(xPosition) + "mm");
+        System.out.println("y: " + (int)(yPosition) + "mm");
+        System.out.println("Heading: " + (tHeading) + " rad");
         
         Button.waitForAnyPress();
         
