@@ -7,6 +7,7 @@ public class test1 {
 	static EncoderMotor motorA = new NXTMotor (MotorPort.A);
 	static EncoderMotor motorC = new NXTMotor (MotorPort.C);
 	public static void main(String[] args) {
+		line();
 		int[][] command = {
 			      { 80, 60, 2},
 			      { 60, 60, 1},
@@ -131,15 +132,13 @@ public class test1 {
 		double tHeading = 0;
 		double xPosition = 0;
 		double yPosition = 0;
-		double cRVel = 0;
-		double cAngPos = 0;
         double wDiameter = 56;//in mm
         double TrackWidth = 148;// in mm
         double dPerTick = Math.PI*wDiameter/360;
         double TicksPerRotation = Math.PI*TrackWidth/dPerTick;
         double RadiansPerTick = 2*Math.PI/TicksPerRotation;
         double cDistance, cxDistance, cyDistance,
-        cHeading, cAngAccel, lRVel, lAngPos;
+        cHeading;
         int prTicks, plTicks, lTicks, rTicks, i, j;
         int crTicks = 0;
         int clTicks = 0;
@@ -175,14 +174,6 @@ public class test1 {
                 cyDistance = cDistance * Math.sin(tHeading);
                 xPosition += cxDistance;
                 yPosition += cyDistance;
-                
-                //maybe this was an over think?
-                //lRVel = cRVel;
-                //cRVel = cHeading/cTime;
-                //cAngAccel = (cRVel - lRVel)/2;
-                //lAngPos = cAngPos;
-                //check my summing of angle logic
-                //cAngPos = lAngPos+(lRVel*cTime)+(cTime*cTime*cAngAccel/2);
                 
                 
                 
