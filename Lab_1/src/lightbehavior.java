@@ -17,7 +17,7 @@ public class lightbehavior {
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		love();
+		explore();
 	}
 
 	public static void love(){
