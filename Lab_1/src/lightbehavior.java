@@ -13,7 +13,7 @@ public class lightbehavior {
 	static EV3ColorSensor sen1 = new EV3ColorSensor(SensorPort.S2);
 	static EV3ColorSensor sen2 = new EV3ColorSensor(SensorPort.S4);
 	static EncoderMotor motorA = new NXTMotor (MotorPort.A);
-	static EncoderMotor motorC = new NXTMotor (MotorPort.C);
+	static EncoderMotor motorC = new NXTMotor (MotorPort.D);
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub

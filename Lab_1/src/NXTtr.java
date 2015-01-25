@@ -100,35 +100,35 @@ public class NXTtr
 		movingSpeed = S;
 
 		Motor.A.setSpeed(movingSpeed);
-		Motor.C.setSpeed(movingSpeed);
+		Motor.D.setSpeed(movingSpeed);
 
 
 		if(direction[0] == true)
 		{
 			Motor.A.forward();  
-			Motor.C.forward();
+			Motor.D.forward();
 		}
 
 		if(direction[1] == true)
 		{
 			Motor.A.backward();  
-			Motor.C.backward();
+			Motor.D.backward();
 		}
 
 		if(direction[2] == true)
 		{
 			Motor.A.setSpeed(turnSpeed);
-			Motor.C.setSpeed(turnSpeed);
+			Motor.D.setSpeed(turnSpeed);
 			Motor.A.forward();
-			Motor.C.backward();
+			Motor.D.backward();
 		}
 
 		if(direction[3] == true)
 		{
 			Motor.A.setSpeed(turnSpeed);
-			Motor.C.setSpeed(turnSpeed);
+			Motor.D.setSpeed(turnSpeed);
 			Motor.A.backward(); 
-			Motor.C.forward();
+			Motor.D.forward();
 		}
 
 		if(direction[0] == true && direction[2] == true)
@@ -136,7 +136,7 @@ public class NXTtr
 			speedBuffer =  (int) (movingSpeed *1.5);
 
 			Motor.A.setSpeed(speedBuffer);
-			Motor.C.forward();
+			Motor.D.forward();
 			Motor.A.forward();
 		}
 
@@ -144,8 +144,8 @@ public class NXTtr
 		{
 			speedBuffer =  (int) (movingSpeed *1.5);
 
-			Motor.C.setSpeed(speedBuffer);
-			Motor.C.forward();
+			Motor.D.setSpeed(speedBuffer);
+			Motor.D.forward();
 			Motor.A.forward();
 		}
 
@@ -154,7 +154,7 @@ public class NXTtr
 			speedBuffer =  (int) (movingSpeed *1.5);
 
 			Motor.A.setSpeed(speedBuffer);
-			Motor.C.backward();
+			Motor.D.backward();
 			Motor.A.backward();
 		}
 
@@ -162,8 +162,8 @@ public class NXTtr
 		{
 			speedBuffer =  (int) (movingSpeed *1.5);
 
-			Motor.C.setSpeed(speedBuffer);
-			Motor.C.backward();
+			Motor.D.setSpeed(speedBuffer);
+			Motor.D.backward();
 			Motor.A.backward();
 		}
 
@@ -171,9 +171,9 @@ public class NXTtr
 				direction[2] == false && direction[3] == false)
 		{
 			Motor.A.setSpeed(0);
-			Motor.C.setSpeed(0);
+			Motor.D.setSpeed(0);
 			Motor.A.stop();
-			Motor.C.stop();
+			Motor.D.stop();
 		}
 
 	}//End move

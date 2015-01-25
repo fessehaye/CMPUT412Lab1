@@ -1,15 +1,23 @@
 import lejos.hardware.Button;
+//import lejos.hardware.motor.Motor;
 import lejos.hardware.motor.NXTMotor;
 import lejos.hardware.port.MotorPort;
 import lejos.robotics.EncoderMotor;
+//import lejos.robotics.navigation.DifferentialPilot;
 import lejos.utility.Delay;
 public class test1 {
-	static EncoderMotor motorA = new NXTMotor (MotorPort.A);
-	static EncoderMotor motorC = new NXTMotor (MotorPort.D);
+	static EncoderMotor motorL = new NXTMotor (MotorPort.A);
+	static EncoderMotor motorR = new NXTMotor (MotorPort.D);
+
+    static double wDiameter = 57;//in mm
+    static double TrackWidth = 121;// in mm
+//	static DifferentialPilot pilot = new DifferentialPilot(wDiameter, TrackWidth, Motor.A, Motor.C, true);
+
 	public static void main(String[] args) {
 //		line();
 //		line();
-//		line();`
+//		line();
+//		circle();
 //		rectangle();
 //		rectangle();
 //		rectangle();
@@ -21,9 +29,9 @@ public class test1 {
 //			    };
 //		Reckoning_Position(command);	
 		int[][] command = {
-			      { 20, 20, 1},
-			      { 40, 40, 1},
-			      { 60, 60, 2}
+			      { 0, 0, 1},
+			      { 40, 30, 2},
+			      { 0, 0, 1}
 			    };
 		Reckoning_Position(command);	
 		//int[][] command2 = {
@@ -35,27 +43,32 @@ public class test1 {
 	}
 	public static void rectangle(){
 		//Rectangle
-		motorA.resetTachoCount();
-		motorA.setPower(30);
-		motorC.setPower(30);
+		motorL.resetTachoCount();
+		motorR.resetTachoCount();
+		motorL.setPower(40);
+		motorR.setPower(40);
 		
 		for(int i = 0; i < 4; i++){
-			motorA.forward();
-			motorC.forward();
+			motorL.forward();
+			motorR.forward();
 			Delay.msDelay(900);
-			motorA.stop();
-			motorC.stop();
+			motorL.stop();
+			motorR.stop();
+			Delay.msDelay(600);
+			motorL.forward();
+			motorR.backward();
 			Delay.msDelay(900);
-			motorA.forward();
-			motorC.backward();
-			Delay.msDelay(1200);
-			motorA.stop();
-			motorC.stop();
+			motorL.stop();
+			motorR.stop();
+			
+//			pilot.travel(40);
+//			pilot.rotate(90);
 			
 		}
 		
-	
-		motorA.resetTachoCount();
+
+		motorL.resetTachoCount();
+		motorR.resetTachoCount();
 		Delay.msDelay(2000);
 		
 		Button.waitForAnyPress();
@@ -63,17 +76,19 @@ public class test1 {
 	
 	public static void line(){
 		//Straight Line
-			motorA.resetTachoCount();
-			motorA.setPower(50);
-			motorC.setPower(50);
-			motorA.forward();
-			motorC.forward();
+			motorL.resetTachoCount();
+			motorR.resetTachoCount();
+			motorL.setPower(40);
+			motorR.setPower(40);
+			motorL.forward();
+			motorR.forward();
 			Delay.msDelay(2000);
-			motorA.stop();
-			motorC.stop();
+			motorL.stop();
+			motorR.stop();
 				
 
-			motorA.resetTachoCount();
+			motorL.resetTachoCount();
+			motorR.resetTachoCount();
 				
 			Delay.msDelay(2000);
 			
@@ -82,35 +97,33 @@ public class test1 {
 	
 	public static void circle(){
 		//Circle
-		motorA.resetTachoCount();
-		motorA.setPower(0);
-		motorC.setPower(50);
-		motorA.forward();
-		motorC.forward();
-		Delay.msDelay(6000);
-		motorA.stop();
-		motorC.stop();
+		motorL.resetTachoCount();
+		motorR.resetTachoCount();
+		motorL.setPower(0);
+		motorR.setPower(50);
+		motorL.forward();
+		motorR.forward();
+		Delay.msDelay(5000);
+		motorL.stop();
+		motorR.stop();
 		
 
-		motorA.resetTachoCount();
-
-		Delay.msDelay(2000);
-		
 		Button.waitForAnyPress();
 	}
 	
 	public static void figure_eight(){
 		//Figure 8
-		motorA.setPower(100);
-		motorC.setPower(0);
-		motorA.resetTachoCount();
-		motorA.forward();
-		motorC.forward();
+		motorL.setPower(100);
+		motorR.setPower(0);
+		motorL.resetTachoCount();
+		motorR.resetTachoCount();
+		motorL.forward();
+		motorR.forward();
 		Delay.msDelay(2000);
-		motorA.setPower(0);
-		motorC.setPower(100);
+		motorL.setPower(0);
+		motorR.setPower(100);
 		Delay.msDelay(2250);
-		motorC.stop();
+		motorR.stop();
 		Delay.msDelay(2000);
 		
 		
@@ -141,8 +154,6 @@ public class test1 {
 		double tHeading = 0;
 		double xPosition = 0;
 		double yPosition = 0;
-        double wDiameter = 57;//in mm
-        double TrackWidth = 121;// in mm
         double dPerTick = Math.PI*wDiameter/360;
         double TicksPerRotation = Math.PI*TrackWidth/dPerTick;
         double RadiansPerTick = 2*Math.PI/TicksPerRotation;
@@ -153,15 +164,16 @@ public class test1 {
         int clTicks = 0;
         int cTime = 10;// in ms
         
-        motorA.resetTachoCount();
+        motorL.resetTachoCount();
+        motorR.resetTachoCount();
         
         //Keeps track of row from int[][] command
         for (i = 0; i<3; i++){
         	//initialize motors
-        	motorA.setPower(command[i][0]);
-            motorC.setPower(command[i][1]);
-            motorA.forward();
-            motorC.forward();
+        	motorL.setPower(command[i][0]);
+            motorR.setPower(command[i][1]);
+            motorL.forward();
+            motorR.forward();
             
             //delay loop add 10ms until reaching seconds from command[i][2]
             j = 0;
@@ -172,8 +184,8 @@ public class test1 {
                 //updating previous and current motor tachos
                 prTicks = crTicks;
                 plTicks = clTicks;
-                clTicks = motorA.getTachoCount();
-                crTicks = motorC.getTachoCount();
+                clTicks = motorL.getTachoCount();
+                crTicks = motorR.getTachoCount();
                 
                 //change in tacho for this time period
                 rTicks = crTicks - prTicks;
@@ -201,8 +213,8 @@ public class test1 {
             }	
         }
         //Ensures Robot stops at calculated position
-        motorA.stop();
-		motorC.stop();
+        motorL.stop();
+		motorR.stop();
 		
 		//printing output to EV3 screen
         System.out.println("x: " + (int)(xPosition) + "mm");
