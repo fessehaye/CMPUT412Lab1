@@ -1,26 +1,11 @@
 /*
- * September 21, 2009
- * Author Tawat Atigarbodee
- *
  * This program creates a Control Window for controlling NXT brick running NXTtr.java via USB.
+ * Used code from http://lejos.sourceforge.net/forum/viewtopic.php?t=1723
  *
- * To compile this program.
- *  -   Install Lejos 0.8.5
- *  -   Include Lejos_nxj library to the project path
- *  -   Compile the program with javac (I use Eclipse)
- *
- * To use this program
- *  -   At NXT brick, run NXTtr.java 
- *  -   Run NXTremoteControl_TA
- *  -   **Click “Connect” button first**
- *  -   Control the robot by using buttons or keyboard
- *       a, w, s, d for direction
- *       i for speed up and  k for slow down
- *
- * Note: This program is a partial of my project file. 
- * I use “USBSend” and “USBReceive” created by Lawrie Griffiths 
- * as a pattern for creating USB communication between PC and NXT. 
- *
+ * Modified from original to allow usable of EV3 Blocks and exclusively bluetooth connect 
+ * 
+ * 
+ * RUN NXTtr.java ON THE EV3 BLOCK BEFORE RUNNING NXTremoteControl_TA.java
  */
 
 import javax.swing.*;
@@ -251,18 +236,25 @@ public class NXTremoteControl_TA extends JFrame
 		}
 
 	}//End ButtonHandler
-
+	
+	/*
+	 * Modified from original code to allow bluetooth usage on EV3 block 
+	 */
 	public static void connect()
 	{
 		link = new BTConnector();
-
+		//connects directly from EV3 blocks MAC address
 		BTConnection btlink = link.connect("00:16:53:44:97:4F", NXTConnection.RAW);
 
 		outData = btlink.openDataOutputStream();
-		System.out.println("\nNXT is Connected");   
+		//displays if EV3 is successfully connected
+		System.out.println("\nEV3 is Connected");   
 
 	}//End connect
-
+	
+	/*
+	 * Used to disconnect the connection after pressing the Q key.
+	 */
 	public static void disconnect()
 	{
 		try{

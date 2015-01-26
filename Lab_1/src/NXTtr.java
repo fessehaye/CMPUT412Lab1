@@ -1,27 +1,18 @@
 /*
- * September 21, 2009
- * Author by Tawat Atigarbodee
- *
+ * Used code from http://lejos.sourceforge.net/forum/viewtopic.php?t=1723
  * Install this program on to NXT brick and use it with NXTremoteControl_TA.java
- *
- * To use this program.
- *  -   Install Lejos 0.8.5
- *  -   Include Lejos_nxj library to the project path
- *  -   Upload the program using lejosdl.bat (I use Eclipse)
- *  -   To exit the program, restart NXT brick (remove battery)
+ * Modified from original to allow usable of EV3 Blocks and exclusively bluetooth connect 
  * 
+ * 
+ * RUN THIS ON THE EV3 BLOCK BEFORE RUNNING NXTremoteControl_TA.java
  * NXT setup
  *  -  Port A for right wheel
  *  -  Port C for left wheel
  *  -  No sensor is needed
- *  
- * Note: This program is a partial of my project file. 
- * I use “USBSend” and “USBReceive” created by Lawrie Griffiths 
- * as a pattern for creating USB communication between PC and NXT. 
+ * 
  */
 
 import java.io.*;
-
 import lejos.remote.nxt.*;
 import lejos.hardware.Bluetooth;
 import lejos.hardware.Button;
@@ -55,6 +46,10 @@ public class NXTtr
 		}
 	}//End main
 
+	/*
+	 * Checks dataIn for movement instructions
+	 * 
+	 */
 	public static boolean[] checkCommand()//check input data
 	{
 
@@ -102,19 +97,19 @@ public class NXTtr
 		Motor.A.setSpeed(movingSpeed);
 		Motor.D.setSpeed(movingSpeed);
 
-
+		//forward
 		if(direction[0] == true)
 		{
 			Motor.A.forward();  
 			Motor.D.forward();
 		}
-
+		//Backward
 		if(direction[1] == true)
 		{
 			Motor.A.backward();  
 			Motor.D.backward();
 		}
-
+		//left
 		if(direction[2] == true)
 		{
 			Motor.A.setSpeed(turnSpeed);
@@ -122,7 +117,7 @@ public class NXTtr
 			Motor.A.forward();
 			Motor.D.backward();
 		}
-
+		//right
 		if(direction[3] == true)
 		{
 			Motor.A.setSpeed(turnSpeed);
@@ -177,7 +172,11 @@ public class NXTtr
 		}
 
 	}//End move
-
+	
+	/*
+	 * Waits for a connection and creates a listening socket.
+	 * changed from original code to allow the use of EV3
+	 */
 	public static void connect()
 	{  
 		System.out.println("Listening");
